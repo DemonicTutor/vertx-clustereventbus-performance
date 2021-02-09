@@ -11,7 +11,8 @@ docker stats
 
 then remove `@Ignore` and run `MainVerticleTest#load` however you like
 
-to switch vertx version to 3.9.5 change property in pom.xml and modify `MainVerticleTest#httpRequest` 
+to switch vertx version to 3.9.5 change property in pom.xml and modify `MainVerticleTest#httpRequest`  
+to switch hazelcast / ignite uncomment dependency in pom.xml
 
 # on my machine
 
@@ -42,7 +43,7 @@ f163fb95e082   tp3       56.09%    217.3MiB / 512MiB   42.44%    12.6GB / 30.9MB
 cpu doesnt drop after requests stop
 ```
 
-## Vertx 3.9.5 + Hazelcast
+## VertX 3.9.5 + Hazelcast
 
 ```
 final var requestsPerSecond = 100;
@@ -59,3 +60,42 @@ c29c9960a920   tp3       0.42%     172.6MiB / 512MiB   33.71%    1.89MB / 914kB 
 3f01cbf4bb8f   tp2       0.50%     179.1MiB / 512MiB   34.99%    2.04MB / 1.26MB   0B / 0B     61
 515a79d376ff   tp1       0.42%     396.5MiB / 512MiB   77.45%    65.5MB / 62.5MB   0B / 0B     75
 ```
+
+
+## VertX 4.0.2 + Ignite
+
+```
+final var requestsPerSecond = 100;
+
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O     PIDS
+08ed909edc55   tp3       90.05%    400.5MiB / 512MiB   78.22%    2.15MB / 1.89MB   0B / 0B       86
+818f1d3e7db8   tp2       93.28%    401.5MiB / 512MiB   78.42%    2.22MB / 2.08MB   238kB / 0B    94
+9062bf3b8bd5   tp1       100.14%   429.8MiB / 512MiB   83.95%    3.32MB / 3.41MB   81.9MB / 0B   101
+
+~15 seconds after requests stop:
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O     PIDS
+08ed909edc55   tp3       0.49%     418.9MiB / 512MiB   81.82%    3.55MB / 3.15MB   0B / 0B       86
+818f1d3e7db8   tp2       0.49%     416.1MiB / 512MiB   81.27%    3.6MB / 3.43MB    238kB / 0B    95
+9062bf3b8bd5   tp1       99.63%    437.5MiB / 512MiB   85.45%    5.51MB / 5.83MB   81.9MB / 0B   102
+
+~45 seconds after requests stop:
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O     PIDS
+08ed909edc55   tp3       2.06%     404.4MiB / 512MiB   78.98%    3.62MB / 3.21MB   0B / 0B       86
+818f1d3e7db8   tp2       1.65%     409.2MiB / 512MiB   79.92%    3.67MB / 3.49MB   238kB / 0B    95
+9062bf3b8bd5   tp1       1.49%     437.5MiB / 512MiB   85.45%    5.58MB / 5.9MB    81.9MB / 0B   102
+
+```
+
+```
+final var requestsPerSecond = 1000;
+
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+b1c31812666f   tp3       99.84%    410.3MiB / 512MiB   80.14%    3.45MB / 3.09MB   0B / 0B     86
+a6a52f937053   tp2       99.51%    407MiB / 512MiB     79.49%    3.51MB / 3.3MB    0B / 0B     95
+d15d9568e229   tp1       99.77%    429.9MiB / 512MiB   83.97%    6.35MB / 7.91MB   0B / 0B     102
+
+cpu doesnt drop after requests stop
+```
+
+## VertX 3.9.5 + Ignite
+
