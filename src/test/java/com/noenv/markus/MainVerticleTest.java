@@ -102,16 +102,15 @@ public class MainVerticleTest {
 
   private static Completable httpRequest(final HttpClient client, final String path, final Consumer<HttpClientResponse> consumer) {
     // VertX 4.0.2
-    // return client.rxRequest(new RequestOptions().setPort(PORT_HTTP).setURI(path))
-    //   .flatMap(HttpClientRequest::rxSend)
-    //   .doOnSuccess(consumer::accept)
-    //   .ignoreElement();
-
-
-    // VertX 4 m 4
-    return client.rxGetNow(PORT_HTTP, "localhost", path)
+    return client.rxRequest(new RequestOptions().setPort(PORT_HTTP).setURI(path))
+      .flatMap(HttpClientRequest::rxSend)
       .doOnSuccess(consumer::accept)
       .ignoreElement();
+
+    // VertX 4 m 4
+    // return client.rxGetNow(PORT_HTTP, "localhost", path)
+    //   .doOnSuccess(consumer::accept)
+    //   .ignoreElement();
 
     // VertX 3
     // final var subject = CompletableSubject.create();
