@@ -97,5 +97,33 @@ d15d9568e229   tp1       99.77%    429.9MiB / 512MiB   83.97%    6.35MB / 7.91MB
 cpu doesnt drop after requests stop
 ```
 
-## VertX 3.9.5 + Ignite
+## Selectors NO-OP
 
+does not help much - CPU never drops and also note network traffic!
+```
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+22436a39da01   tp3       58.53%    192.6MiB / 512MiB   37.61%    5.14GB / 14.2MB   0B / 0B     72
+2d1f8aa051dd   tp2       99.01%    188.3MiB / 512MiB   36.78%    29.4MB / 10.3GB   0B / 0B     78
+3caab90f0e83   tp1       62.73%    246.1MiB / 512MiB   48.06%    5.15GB / 22.7MB   0B / 0B     86
+```
+
+## SubsMapHelper rework to Hazelcast Topic
+
+helps somewhat with CPU and A LOT with network traffic - CPU drops after ~15-25 seconds
+```
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+6f09d4137ad4   tp3       88.14%    186.6MiB / 512MiB   36.44%    19.4MB / 3.02MB   0B / 0B     72
+0d3c882e9c8f   tp2       88.50%    188MiB / 512MiB     36.72%    19.7MB / 3.23MB   0B / 0B     79
+bae8f65d0b06   tp1       98.30%    232.4MiB / 512MiB   45.38%    11.9MB / 43.8MB   0B / 0B     87
+
+```
+
+## both
+
+closer to VertX 3.9.5 and CPU drops instantly
+```
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+79bc1009eed8   tp3       13.36%    186.9MiB / 512MiB   36.50%    27.1MB / 4.46MB   0B / 0B     72
+194de775d35d   tp2       11.75%    190.1MiB / 512MiB   37.14%    27.4MB / 4.53MB   0B / 0B     78
+ad3b8d6cbc20   tp1       22.29%    238.1MiB / 512MiB   46.51%    16.8MB / 61.4MB   0B / 0B     86
+```
