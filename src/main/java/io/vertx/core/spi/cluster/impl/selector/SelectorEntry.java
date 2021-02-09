@@ -44,16 +44,17 @@ class SelectorEntry {
   }
 
   SelectorEntry data(List<String> nodeIds) {
-    if (nodeIds == null || nodeIds.isEmpty()) {
-      return null;
-    }
-    Map<String, Integer> weights = computeWeights(nodeIds);
-    RoundRobinSelector selector;
-    if (isEvenlyDistributed(weights)) {
-      selector = new SimpleRoundRobinSelector(new ArrayList<>(weights.keySet()));
-    } else {
-      selector = new WeightedRoundRobinSelector(weights);
-    }
+    //if (nodeIds == null || nodeIds.isEmpty()) {
+    //  return null;
+    //}
+    //Map<String, Integer> weights = computeWeights(nodeIds);
+    //RoundRobinSelector selector;
+    //if (isEvenlyDistributed(weights)) {
+    //  selector = new SimpleRoundRobinSelector(new ArrayList<>(weights.keySet()));
+    //} else {
+    //  selector = new WeightedRoundRobinSelector(weights);
+    //}
+    //return new SelectorEntry(selector, selectorPromise, counter);
     return new SelectorEntry(selector, selectorPromise, counter);
   }
 

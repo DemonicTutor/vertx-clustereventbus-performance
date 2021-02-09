@@ -73,29 +73,29 @@ public class Selectors {
   }
 
   public void dataReceived(String address, List<RegistrationInfo> registrations) {
-    List<String> accessible = computeAccessible(registrations);
-    while (true) {
-      SelectorEntry previous = map.get(address);
-      if (previous == null) {
-        break;
-      }
-      SelectorEntry next = previous.data(accessible);
-      if (next == null) {
-        if (map.remove(address, previous)) {
-          if (previous.isNotReady()) {
-            previous.selectorPromise.complete(NullRoundRobinSelector.INSTANCE);
-          }
-          break;
-        }
-      } else {
-        if (map.replace(address, previous, next)) {
-          if (previous.isNotReady()) {
-            previous.selectorPromise.complete(next.selector);
-          }
-          break;
-        }
-      }
-    }
+    // List<String> accessible = computeAccessible(registrations);
+    // while (true) {
+    //   SelectorEntry previous = map.get(address);
+    //   if (previous == null) {
+    //     break;
+    //   }
+    //   SelectorEntry next = previous.data(accessible);
+    //   if (next == null) {
+    //     if (map.remove(address, previous)) {
+    //       if (previous.isNotReady()) {
+    //         previous.selectorPromise.complete(NullRoundRobinSelector.INSTANCE);
+    //       }
+    //       break;
+    //     }
+    //   } else {
+    //     if (map.replace(address, previous, next)) {
+    //       if (previous.isNotReady()) {
+    //         previous.selectorPromise.complete(next.selector);
+    //       }
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   private List<String> computeAccessible(List<RegistrationInfo> registrations) {
